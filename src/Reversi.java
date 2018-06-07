@@ -23,6 +23,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	int clickWidth;
 	int clickHeight;
 	int state;
+	int bscore;
+	int wscore;
 	double tileElipsed;
 	final int x = 8;
 	final int y = 8;
@@ -167,7 +169,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 							frame.repaint();
 							checkScore();
 							if (checkGameEnd() == true) {
-								System.out.println("Somebody Won LMAOOOOOOOOO");
+							    checkWin();
 								clearBoard();
 							}
 							else {
@@ -184,7 +186,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 							frame.repaint();
 							checkScore();
 							if (checkGameEnd() == true) {
-								System.out.println("Somebody Won LMAOOOOOOOOO");
+								checkWin();
 								clearBoard();
 							}
 							else {
@@ -232,19 +234,30 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			frame.repaint();
 		}
 	}
+	public void checkWin() {
+		if (bscore > wscore) {
+			System.out.println("Black Wins!");
+		}
+		if (bscore < wscore) {
+			System.out.println("White Wins!");
+		}
+		if (bscore == wscore) {
+			System.out.println("Tie Game!");
+		}
+	}
 	public void checkScore() {
-		int bscore = 0;
-		int wscore = 0;
+		bscore = 0;
+		wscore = 0;
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
 				if (cells[i][j] == WHITE_PIECE) {
 					wscore++;
-					whiteScore.setText("Score: " + wscore);
+					whiteScore.setText("White Score: " + wscore);
 				     
 				}
 				if (cells[i][j] == BLACK_PIECE) {
 					bscore++;
-					blackScore.setText("Score: " + bscore);
+					blackScore.setText("Black Score: " + bscore);
 				}
 			}
 		}
@@ -276,6 +289,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		return true;
 			
 		}
+	
+	
 		
 	
 	
