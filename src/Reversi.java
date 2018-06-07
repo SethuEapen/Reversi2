@@ -296,8 +296,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	
 	
 	public boolean checkMove(int player, int direction, int x, int y, boolean finashable) {
-		return true;
-		/*if(direction == NULL_DIRECTION) {
+		if(direction == NULL_DIRECTION) {
 			for (int i = 0; i < 8; i++) {
 				x = newX(x, i);
 				y = newY(y, i);
@@ -309,12 +308,16 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				return false;
 			}
 		}
-		return true;*/
+		return true;
 	}
 	
 	public int newX(int x, int direction) {
-		return direction;
-		
+		if(direction == NORTH) {
+			return x;
+		}
+		if(direction == WEST) {
+			return x - 1;
+		}
 	}
 	public int newY(int y, int direction) {
 		return direction;
