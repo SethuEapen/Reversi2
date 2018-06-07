@@ -9,6 +9,5 @@ public class Credits {
 		creditsFrame.setSize(500, 600);
 		creditsFrame.setLocationRelativeTo(null);
 		creditsFrame.setVisible(true);
-		System.out.println("Tu madre es padre");
 	}
 }
