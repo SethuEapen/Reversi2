@@ -10,19 +10,17 @@ public class Timer extends JLabel implements Runnable {
 		
 	}
 	
-	@Override
-	public void run() {//runnable method what happens when the program is run
-		while(reversi.isRunning()) {
-			tileElipsed = (int)(startTime - System.currentTimeMillis());
-			this.setText(Integer.toString(tileElipsed));
-		}
-	}
-	
 	public double getStartTime() {
 		return startTime;
 	}
 	public void setStartTime(double startTime) {
 		this.startTime = startTime;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

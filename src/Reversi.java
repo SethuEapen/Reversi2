@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 public class Reversi implements ActionListener, MouseListener, Runnable {
 	//Integers
@@ -43,6 +44,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	final int SOUTH_EAST = 6;
 	final int NORTH_EAST = 7;
 	final int NULL_DIRECTION = 8;
+	
+
 
 	
 	//String
@@ -59,6 +62,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	Container north = new Container();
 	JButton back = new JButton("Back");
 	JLabel time = new JLabel("Time");
+	JTextField blackScore = new JTextField("Black Score: 0");
+	JTextField whiteScore = new JTextField("White Score: 0");
 	Dimension menuDimention = new Dimension(Menu.getWidth() + 16, Menu.getHeight() + 39);
 	Dimension gameDimention = new Dimension(1000, 1000);
 	Thread t = new Thread(this);
@@ -80,7 +85,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		back.addActionListener(this);
 		back.setBackground(Color.LIGHT_GRAY);
 		north.add(back);
-		north.add(time);
+		north.add(blackScore);
+		north.add(whiteScore);
 		Game.add(north, BorderLayout.NORTH);
 		//Panel Setup
 		frame.add(Menu);
@@ -159,7 +165,15 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 						if(clickHeight > back.getHeight()) {
 							cells[x][y] = BLACK_PIECE;
 							frame.repaint();
-							turn = WHITE_TURN;
+							checkScore();
+							if (checkGameEnd() == true) {
+								System.out.println("Somebody Won LMAOOOOOOOOO");
+								clearBoard();
+							}
+							else {
+								turn = WHITE_TURN;
+							}
+						
 						}
 					}
 				}
@@ -168,7 +182,15 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 						if(clickHeight > back.getHeight()) {
 							cells[x][y] = WHITE_PIECE;
 							frame.repaint();
-							turn = BLACK_TURN;
+							checkScore();
+							if (checkGameEnd() == true) {
+								System.out.println("Somebody Won LMAOOOOOOOOO");
+								clearBoard();
+							}
+							else {
+								turn = BLACK_TURN;
+							}
+					
 						}
 					}
 				}
@@ -210,7 +232,23 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			frame.repaint();
 		}
 	}
-	
+	public void checkScore() {
+		int bscore = 0;
+		int wscore = 0;
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				if (cells[i][j] == WHITE_PIECE) {
+					wscore++;
+					whiteScore.setText("Score: " + wscore);
+				     
+				}
+				if (cells[i][j] == BLACK_PIECE) {
+					bscore++;
+					blackScore.setText("Score: " + bscore);
+				}
+			}
+		}
+	}
 	public void clearBoard() {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
@@ -226,6 +264,21 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	public void moveCalc(int player) {
 		
 	}
+	
+	public boolean checkGameEnd() {
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				if (cells[i][j] == EMPTY_TILE) {
+					return false;
+				}
+			}
+		}
+		return true;
+			
+		}
+		
+	
+	
 	
 	public boolean checkMove(int player, int direction, int x, int y, boolean finashable) {
 		return true;
@@ -245,9 +298,11 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	}
 	
 	public int newX(int x, int direction) {
+		return direction;
 		
 	}
 	public int newY(int y, int direction) {
+		return direction;
 		
 	}
 
