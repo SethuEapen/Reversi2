@@ -127,7 +127,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	public void mouseReleased(MouseEvent e) {
 		clickWidth = e.getX();
 		clickHeight = e.getY();
-		System.out.println(clickWidth + ", " + clickHeight);
+		//System.out.println(clickWidth + ", " + clickHeight);
 		if(state == MENU_STATE) {
 			if(clickWidth <= 467 && clickWidth >= 159) {
 				if(clickHeight <= 271 && clickHeight >= 219) {
@@ -161,6 +161,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		else if(state == GAME_STATE) {
 			int x = clickWidth / (panel.getWidth() / cells[0].length);
 			int y = clickHeight / (panel.getHeight() / cells.length);
+			//System.out.println(x + ", " + y);
 			if(cells[x][y] == EMPTY_TILE) {
 				if(turn == BLACK_TURN) {
 					if(checkMove(BLACK_TURN, NULL_DIRECTION, x, y, false)) {
@@ -305,22 +306,36 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	
 	
 	public boolean checkMove(int player, int direction, int x, int y, boolean finashable) {
-		return true;
-		/*if(direction == NULL_DIRECTION) {
+		int newX;
+		int newY;
+		System.out.println(x + ", " + y);
+		if(direction == NULL_DIRECTION) {
 			for (int i = 0; i < 8; i++) {
-				x = newX(x, i);
-				y = newY(y, i);
-				checkMove(player, i, x, y, finashable);
+				newX = newX(x, i);
+				newY = newY(y, i);
+				if(newX >= 0 || newY >= 0 || newX <= 7 || newY <= 7) {
+					checkMove(player, i, newX, newY, finashable);
+				}
 			}
 		}
 		else {
-			if(cells[x][y] == EMPTY_TILE) {
-				return false;
+			if(cells[x][y] == player) {
+				if(finashable) {
+					return true;
+				}
 			}
+			else if(cells[x][y] != player && cells[x][y] != EMPTY_TILE) {
+				finashable = true;
+				newX = newX(x, direction);
+				newY = newY(y, direction);
+				if(x >= 0 || y >= 0) {
+					checkMove(player, direction, newX, newY, finashable);
+				}			}
 		}
-		return true;*/
+		return false;
 	}
 	
+	@SuppressWarnings("null")
 	public int newX(int x, int direction) {
 		if(direction == NORTH) {
 			return x;

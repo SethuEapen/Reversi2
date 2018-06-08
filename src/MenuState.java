@@ -21,7 +21,7 @@ public class MenuState extends JPanel{
 		}
 		width = myImage.getWidth(null);
 		height = myImage.getHeight(null);
-		System.out.println(width + ", " + height);
+		//System.out.println(width + ", " + height);
 	}
 	
 	
