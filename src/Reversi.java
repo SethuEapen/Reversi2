@@ -268,6 +268,15 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				cells[i][j] = EMPTY_TILE;
 			}
 		}
+		cells[3][3] = WHITE_PIECE;
+		cells[4][4] = WHITE_PIECE;	
+		cells[3][4] = BLACK_PIECE;		
+		cells[4][3] = BLACK_PIECE;
+		bscore = 2;
+		wscore = 2;		
+		whiteScore.setText("White Score: " + wscore);
+		blackScore.setText("Black Score: " + bscore);
+		
 	}
 	
 	public void AiMove() {
@@ -296,7 +305,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	
 	
 	public boolean checkMove(int player, int direction, int x, int y, boolean finashable) {
-		if(direction == NULL_DIRECTION) {
+		return true;
+		/*if(direction == NULL_DIRECTION) {
 			for (int i = 0; i < 8; i++) {
 				x = newX(x, i);
 				y = newY(y, i);
@@ -308,7 +318,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				return false;
 			}
 		}
-		return true;
+		return true;*/
 	}
 	
 	public int newX(int x, int direction) {
@@ -318,10 +328,52 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		if(direction == WEST) {
 			return x - 1;
 		}
+		if(direction == SOUTH) {
+			return x;
+		}
+		if(direction == EAST) {
+			return x + 1;
+		}
+		if(direction == NORTH_WEST) {
+			return x - 1;
+		}
+		if(direction == SOUTH_WEST) {
+			return x - 1;
+		}
+		if(direction == SOUTH_EAST) {
+			return x + 1;
+		}
+		if(direction == NORTH_EAST) {
+			return x + 1;
+		}
+		return (Integer) null;
 	}
 	public int newY(int y, int direction) {
-		return direction;
-		
+		if(direction == NORTH) {
+			return y - 1;
+		}
+		if(direction == WEST) {
+			return x - 1;
+		}
+		if(direction == SOUTH) {
+			return x;
+		}
+		if(direction == EAST) {
+			return x + 1;
+		}
+		if(direction == NORTH_WEST) {
+			return x - 1;
+		}
+		if(direction == SOUTH_WEST) {
+			return x - 1;
+		}
+		if(direction == SOUTH_EAST) {
+			return x + 1;
+		}
+		if(direction == NORTH_EAST) {
+			return x + 1;
+		}
+		return (Integer) null;		
 	}
 
 	public int getState() {
