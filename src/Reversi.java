@@ -306,15 +306,14 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	
 	
 	public boolean checkMove(int player, int direction, int x, int y, boolean finashable) {
-		int newX;
-		int newY;
-		System.out.println(x + ", " + y);
+		int Xnew;
+		int Ynew;
 		if(direction == NULL_DIRECTION) {
 			for (int i = 0; i < 8; i++) {
-				newX = newX(x, i);
-				newY = newY(y, i);
-				if(newX >= 0 || newY >= 0 || newX <= 7 || newY <= 7) {
-					checkMove(player, i, newX, newY, finashable);
+				Xnew = newX(x, i);
+				Ynew = newY(y, i);
+				if(Xnew >= 0 || Ynew >= 0 || Xnew <= 7 || Ynew <= 7) {
+					checkMove(player, i, Xnew, Ynew, finashable);
 				}
 			}
 		}
@@ -325,14 +324,15 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				}
 			}
 			else if(cells[x][y] != player && cells[x][y] != EMPTY_TILE) {
-				finashable = true;
-				newX = newX(x, direction);
-				newY = newY(y, direction);
-				if(x >= 0 || y >= 0) {
-					checkMove(player, direction, newX, newY, finashable);
-				}			}
+				Xnew = newX(x, direction);
+				Ynew = newY(y, direction);
+				if(Xnew >= 0 || Ynew >= 0 || Xnew <= 7 || Ynew <= 7) {
+					checkMove(player, direction, Xnew, Ynew, true);
+				}
+			}
 		}
-		return false;
+		
+		return true;
 	}
 	
 	@SuppressWarnings("null")
@@ -368,25 +368,25 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			return y - 1;
 		}
 		if(direction == WEST) {
-			return x - 1;
+			return y - 1;
 		}
 		if(direction == SOUTH) {
-			return x;
+			return y;
 		}
 		if(direction == EAST) {
-			return x + 1;
+			return y + 1;
 		}
 		if(direction == NORTH_WEST) {
-			return x - 1;
+			return y - 1;
 		}
 		if(direction == SOUTH_WEST) {
-			return x - 1;
+			return y - 1;
 		}
 		if(direction == SOUTH_EAST) {
-			return x + 1;
+			return y + 1;
 		}
 		if(direction == NORTH_EAST) {
-			return x + 1;
+			return y + 1;
 		}
 		return (Integer) null;		
 	}
