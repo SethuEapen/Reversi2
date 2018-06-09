@@ -46,6 +46,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	final int SOUTH_EAST = 6;
 	final int NORTH_EAST = 7;
 	final int NULL_DIRECTION = 8;
+	boolean finished = false;
+
 	
 
 
@@ -312,18 +314,26 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			for (int i = 0; i < 8; i++) {
 				Xnew = newX(x, i);
 				Ynew = newY(y, i);
+				System.out.println(x + ", " + y);
+				System.out.println(Xnew + ", " + Ynew);
+
 				if(Xnew >= 0 || Ynew >= 0 || Xnew <= 7 || Ynew <= 7) {
 					checkMove(player, i, Xnew, Ynew, finashable);
 				}
 			}
 		}
 		else {
-			if(cells[x][y] == player) {
-				if(finashable) {
-					return true;
+			System.out.println("NEWX AND NEW Y: " + x + ", " + y);
+			if(cells[x][y] == BLACK_PIECE) {
+				System.out.println("Black Peice detected");
+				System.out.println(finashable);
+				if(true) {
+					System.out.println("POOPPOOPPOOP");
+					finished = true;
 				}
 			}
-			else if(cells[x][y] != player && cells[x][y] != EMPTY_TILE) {
+			else if(cells[x][y] == WHITE_PIECE) {
+				System.out.println("Redirecting");
 				Xnew = newX(x, direction);
 				Ynew = newY(y, direction);
 				if(Xnew >= 0 || Ynew >= 0 || Xnew <= 7 || Ynew <= 7) {
@@ -332,7 +342,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			}
 		}
 		
-		return true;
+		return finished;
 	}
 	
 	@SuppressWarnings("null")
@@ -368,25 +378,25 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			return y - 1;
 		}
 		if(direction == WEST) {
-			return y - 1;
-		}
-		if(direction == SOUTH) {
 			return y;
 		}
-		if(direction == EAST) {
+		if(direction == SOUTH) {
 			return y + 1;
+		}
+		if(direction == EAST) {
+			return y;
 		}
 		if(direction == NORTH_WEST) {
 			return y - 1;
 		}
 		if(direction == SOUTH_WEST) {
-			return y - 1;
+			return y + 1;
 		}
 		if(direction == SOUTH_EAST) {
 			return y + 1;
 		}
 		if(direction == NORTH_EAST) {
-			return y + 1;
+			return y - 1;
 		}
 		return (Integer) null;		
 	}
