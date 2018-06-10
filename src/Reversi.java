@@ -47,6 +47,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	final int NORTH_EAST = 7;
 	final int NULL_DIRECTION = 8;
 	boolean finished = false;
+	boolean finishable = false;
 
 	
 
@@ -166,7 +167,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			//System.out.println(x + ", " + y);
 			if(cells[x][y] == EMPTY_TILE) {
 				if(turn == BLACK_TURN) {
-					if(checkMove(BLACK_TURN, NULL_DIRECTION, x, y, false)) {
+					if(checkMove(BLACK_TURN, NULL_DIRECTION, x, y)) {
 						if(clickHeight > back.getHeight()) {
 							cells[x][y] = BLACK_PIECE;
 							frame.repaint();
@@ -181,9 +182,11 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 						
 						}
 					}
+					finishable = false;
+					finished = false;
 				}
 				else if(turn == WHITE_TURN) {
-					if(checkMove(WHITE_TURN, NULL_DIRECTION, x, y, false)) {
+					if(checkMove(WHITE_TURN, NULL_DIRECTION, x, y)) {
 						if(clickHeight > back.getHeight()) {
 							cells[x][y] = WHITE_PIECE;
 							frame.repaint();
@@ -198,6 +201,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 					
 						}
 					}
+					finishable = false;
+					finished = false;
 				}
 			}
 		}
@@ -307,37 +312,31 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	
 	
 	
-	public boolean checkMove(int player, int direction, int x, int y, boolean finashable) {
+	public boolean checkMove(int player, int direction, int x, int y) {
 		int Xnew;
 		int Ynew;
 		if(direction == NULL_DIRECTION) {
 			for (int i = 0; i < 8; i++) {
 				Xnew = newX(x, i);
 				Ynew = newY(y, i);
-				System.out.println(x + ", " + y);
-				System.out.println(Xnew + ", " + Ynew);
-
-				if(Xnew >= 0 || Ynew >= 0 || Xnew <= 7 || Ynew <= 7) {
-					checkMove(player, i, Xnew, Ynew, finashable);
+				if(Xnew >= 0 && Ynew >= 0 && Xnew <= 7 && Ynew <= 7) {
+					checkMove(player, i, Xnew, Ynew);
+					finishable = false;
 				}
 			}
 		}
 		else {
-			System.out.println("NEWX AND NEW Y: " + x + ", " + y);
-			if(cells[x][y] == BLACK_PIECE) {
-				System.out.println("Black Peice detected");
-				System.out.println(finashable);
-				if(true) {
-					System.out.println("POOPPOOPPOOP");
+			if(cells[x][y] == player) {
+				if(finishable) {
 					finished = true;
 				}
 			}
-			else if(cells[x][y] == WHITE_PIECE) {
-				System.out.println("Redirecting");
+			else if(cells[x][y] != player && cells[x][y] != EMPTY_TILE) {
 				Xnew = newX(x, direction);
 				Ynew = newY(y, direction);
-				if(Xnew >= 0 || Ynew >= 0 || Xnew <= 7 || Ynew <= 7) {
-					checkMove(player, direction, Xnew, Ynew, true);
+				if(Xnew >= 0 && Ynew >= 0 && Xnew <= 7 && Ynew <= 7) {
+					finishable = true;
+					checkMove(player, direction, Xnew, Ynew);
 				}
 			}
 		}
