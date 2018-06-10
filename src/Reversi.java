@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -59,6 +60,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	
 	//Arrays
 	int[][] cells = new int[x][y];
+	ArrayList<ArrayList<Integer>> Xvalues = new ArrayList<ArrayList<Integer>>();
+	ArrayList<ArrayList<Integer>> Yvalues = new ArrayList<ArrayList<Integer>>();
 	//J elements
 	JFrame frame = new JFrame("REVERSI!");
 	ReversiPanel panel = new ReversiPanel(cells);
@@ -108,22 +111,18 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 //Mouse Instances
 	
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -150,7 +149,6 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 					try {
 						d.browse(new URI("https://en.wikipedia.org/wiki/Reversi"));
 					} catch (IOException | URISyntaxException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -178,6 +176,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 							}
 							else {
 								turn = WHITE_TURN;
+								blackScore.setBackground(Color.WHITE);
+								whiteScore.setBackground(Color.GREEN);
 							}
 						
 						}
@@ -197,6 +197,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 							}
 							else {
 								turn = BLACK_TURN;
+								blackScore.setBackground(Color.GREEN);
+								whiteScore.setBackground(Color.WHITE);
 							}
 					
 						}
@@ -234,7 +236,6 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			try {
 				Thread.sleep(60);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			tileElipsed = Math.round((System.currentTimeMillis() - startTime) / 10) / 100.0;
@@ -284,18 +285,30 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		wscore = 2;		
 		whiteScore.setText("White Score: " + wscore);
 		blackScore.setText("Black Score: " + bscore);
-		
+		turn = BLACK_TURN;
+		blackScore.setBackground(Color.GREEN);
+		whiteScore.setBackground(Color.WHITE);
+
 	}
 	
 	public void AiMove() {
 		
 	}
-	
-	public void moveCalc(int player) {
 		
-	}
-	
 	public boolean checkGameEnd() {
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				if (cells[i][j] == EMPTY_TILE) {	
+					if(checkMove(BLACK_TURN, NULL_DIRECTION, i, j)) {			
+						return false;
+					}
+					else if(checkMove(WHITE_TURN, NULL_DIRECTION, i, j)) {			
+						return false;
+					}
+				}
+			}
+		}
+		
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
 				if (cells[i][j] == EMPTY_TILE) {
@@ -303,9 +316,10 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				}
 			}
 		}
+		
 		return true;
 			
-		}
+	}
 	
 	
 		
@@ -344,6 +358,18 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		return finished;
 	}
 	
+	public void boardUpdate() {
+		Xvalues.removeAll(Xvalues);
+		Yvalues.removeAll(Yvalues);
+		for (int i = 0; i < 8; i++) {
+			
+		}
+	}
+
+	public void flipPieces() {
+		
+	}
+	
 	@SuppressWarnings("null")
 	public int newX(int x, int direction) {
 		if(direction == NORTH) {
@@ -372,6 +398,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		}
 		return (Integer) null;
 	}
+	@SuppressWarnings("null")
 	public int newY(int y, int direction) {
 		if(direction == NORTH) {
 			return y - 1;
