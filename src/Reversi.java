@@ -388,11 +388,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	}
 	
 	public void boardUpdate() {
-		Xvalues.removeAll(Xvalues);
-		Yvalues.removeAll(Yvalues);
-		for (int i = 0; i < 8; i++) {
-			
-		}
+		
 	}
 
 	public void flipPieces() {
