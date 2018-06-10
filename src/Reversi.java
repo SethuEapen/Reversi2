@@ -49,6 +49,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	final int NULL_DIRECTION = 8;
 	boolean finished = false;
 	boolean finishable = false;
+	boolean AIplayer;
 
 	
 
@@ -133,6 +134,15 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		if(state == MENU_STATE) {
 			if(clickWidth <= 467 && clickWidth >= 159) {
 				if(clickHeight <= 271 && clickHeight >= 219) {
+					Object[] options = { "AI", "2nd PERSON" };//WHAT ARE THE OPTIONS FOR THE DIALOG BOX
+					int option = JOptionPane.showOptionDialog(null, "DO YOU WANT TO PLAY AGAINST AN AI OR ANOTHER PERSON", "Attention", JOptionPane.DEFAULT_OPTION, JOptionPane.OK_CANCEL_OPTION, null, options, options[0]);//STORE VALUE IN INT OPTION		
+					if(option == JOptionPane.YES_OPTION) {
+						AIplayer = true;
+					}
+					else {
+						AIplayer = false;
+					}
+					System.out.println(AIplayer);
 					clearBoard();
 					startTime = System.currentTimeMillis();
 					frame.remove(Menu);
@@ -175,7 +185,12 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 								clearBoard();
 							}
 							else {
-								turn = WHITE_TURN;
+								if(AIplayer == false) {
+									turn = WHITE_TURN;
+								}
+								else {
+									AiMove();
+								}
 								blackScore.setBackground(Color.WHITE);
 								whiteScore.setBackground(Color.GREEN);
 							}
@@ -292,7 +307,20 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	}
 	
 	public void AiMove() {
-		
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				if (cells[i][j] == EMPTY_TILE) {	
+					System.out.println(i + ", " + j + "FOLLOWING IS THE AI MOVE");
+					if(checkMove(WHITE_TURN, NULL_DIRECTION, i, j) == true) {			
+						cells[i][j] = WHITE_PIECE;
+						blackScore.setBackground(Color.GREEN);
+						whiteScore.setBackground(Color.WHITE);
+						turn = BLACK_TURN;
+						return;
+					}
+				}
+			}
+		}
 	}
 		
 	public boolean checkGameEnd() {
@@ -340,6 +368,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			}
 		}
 		else {
+			System.out.println(x + ", " + y);
 			if(cells[x][y] == player) {
 				if(finishable) {
 					finished = true;
