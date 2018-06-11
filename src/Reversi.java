@@ -189,7 +189,14 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 									turn = WHITE_TURN;
 								}
 								else {
+									finishable = false;
+									finished = false;
 									AiMove();
+									checkScore();
+									if (checkGameEnd() == true) {
+									    checkWin();
+										clearBoard();
+									}
 								}
 								blackScore.setBackground(Color.WHITE);
 								whiteScore.setBackground(Color.GREEN);
@@ -310,7 +317,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
 				if (cells[i][j] == EMPTY_TILE) {	
-					System.out.println(i + ", " + j + "FOLLOWING IS THE AI MOVE");
+					System.out.println(i + ", " + j + "FOLLOWING IS THE AI MOVE" + checkMove(WHITE_TURN, NULL_DIRECTION, i, j));
 					if(checkMove(WHITE_TURN, NULL_DIRECTION, i, j) == true) {			
 						cells[i][j] = WHITE_PIECE;
 						blackScore.setBackground(Color.GREEN);
