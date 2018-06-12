@@ -61,8 +61,10 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	
 	//Arrays
 	int[][] cells = new int[x][y];
-	ArrayList<ArrayList<Integer>> Xvalues = new ArrayList<ArrayList<Integer>>();
-	ArrayList<ArrayList<Integer>> Yvalues = new ArrayList<ArrayList<Integer>>();
+	ArrayList<Integer> Xvalues = new ArrayList<Integer>();
+	ArrayList<Integer> Yvalues = new ArrayList<Integer>();
+	ArrayList<Integer> newXvalues = new ArrayList<Integer>();
+	ArrayList<Integer> newYvalues = new ArrayList<Integer>();
 	//J elements
 	JFrame frame = new JFrame("REVERSI!");
 	ReversiPanel panel = new ReversiPanel(cells);
@@ -90,12 +92,13 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		Game.setLayout(new BorderLayout());	
 		Game.add(panel, BorderLayout.CENTER);
 		//North Container Setup
-		north.setLayout(new GridLayout(1, 2));
+		north.setLayout(new GridLayout(1, 3));
 		back.addActionListener(this);
 		back.setBackground(Color.LIGHT_GRAY);
 		north.add(back);
 		north.add(blackScore);
 		north.add(whiteScore);
+		north.add(time);
 		Game.add(north, BorderLayout.NORTH);
 		//Panel Setup
 		frame.add(Menu);
@@ -130,7 +133,6 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	public void mouseReleased(MouseEvent e) {
 		clickWidth = e.getX();
 		clickHeight = e.getY();
-		//System.out.println(clickWidth + ", " + clickHeight);
 		if(state == MENU_STATE) {
 			if(clickWidth <= 467 && clickWidth >= 159) {
 				if(clickHeight <= 271 && clickHeight >= 219) {
@@ -142,7 +144,6 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 					else {
 						AIplayer = false;
 					}
-					System.out.println(AIplayer);
 					clearBoard();
 					startTime = System.currentTimeMillis();
 					frame.remove(Menu);
@@ -172,12 +173,15 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		else if(state == GAME_STATE) {
 			int x = clickWidth / (panel.getWidth() / cells[0].length);
 			int y = clickHeight / (panel.getHeight() / cells.length);
-			//System.out.println(x + ", " + y);
 			if(cells[x][y] == EMPTY_TILE) {
 				if(turn == BLACK_TURN) {
 					if(checkMove(BLACK_TURN, NULL_DIRECTION, x, y)) {
 						if(clickHeight > back.getHeight()) {
 							cells[x][y] = BLACK_PIECE;
+							boardUpdate(BLACK_TURN, NULL_DIRECTION, x, y);
+							System.out.println(Xvalues);
+							System.out.println(Yvalues);
+							flipPieces(BLACK_TURN);
 							frame.repaint();
 							checkScore();
 							if (checkGameEnd() == true) {
@@ -211,6 +215,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 					if(checkMove(WHITE_TURN, NULL_DIRECTION, x, y)) {
 						if(clickHeight > back.getHeight()) {
 							cells[x][y] = WHITE_PIECE;
+							boardUpdate(WHITE_TURN, NULL_DIRECTION, x, y);
+							flipPieces(WHITE_TURN);
 							frame.repaint();
 							checkScore();
 							if (checkGameEnd() == true) {
@@ -267,13 +273,16 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	}
 	public void checkWin() {
 		if (bscore > wscore) {
-			System.out.println("Black Wins!");
+			JOptionPane.showMessageDialog(frame, "Black Wins!");
+			startTime = System.currentTimeMillis();
 		}
 		if (bscore < wscore) {
-			System.out.println("White Wins!");
+			JOptionPane.showMessageDialog(frame, "White Wins!");
+			startTime = System.currentTimeMillis();
 		}
 		if (bscore == wscore) {
-			System.out.println("Tie Game!");
+			JOptionPane.showMessageDialog(frame, "Tie Game!");
+			startTime = System.currentTimeMillis();
 		}
 	}
 	public void checkScore() {
@@ -314,12 +323,14 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	}
 	
 	public void AiMove() {
+		
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
 				if (cells[i][j] == EMPTY_TILE) {	
-					System.out.println(i + ", " + j + "FOLLOWING IS THE AI MOVE" + checkMove(WHITE_TURN, NULL_DIRECTION, i, j));
 					if(checkMove(WHITE_TURN, NULL_DIRECTION, i, j) == true) {			
 						cells[i][j] = WHITE_PIECE;
+						boardUpdate(WHITE_TURN, NULL_DIRECTION, i, j);
+						flipPieces(WHITE_TURN);
 						blackScore.setBackground(Color.GREEN);
 						whiteScore.setBackground(Color.WHITE);
 						turn = BLACK_TURN;
@@ -375,7 +386,6 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			}
 		}
 		else {
-			System.out.println(x + ", " + y);
 			if(cells[x][y] == player) {
 				if(finishable) {
 					finished = true;
@@ -394,12 +404,51 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		return finished;
 	}
 	
-	public void boardUpdate() {
-		
+	public void boardUpdate(int player, int direction, int x, int y) {
+		int Xnew;
+		int Ynew;
+		if(direction == NULL_DIRECTION) {
+			for (int i = 0; i < 8; i++) {
+				newXvalues.clear();
+				newYvalues.clear();
+				Xnew = newX(x, i);
+				Ynew = newY(y, i);
+				if(Xnew >= 0 && Ynew >= 0 && Xnew <= 7 && Ynew <= 7) {
+					newXvalues.add(Xnew);
+					newYvalues.add(Ynew);
+					boardUpdate(player, i, Xnew, Ynew);
+					finishable = false;
+				}
+			}
+		}
+		else {
+			if(cells[x][y] == player) {
+				if(finishable) {
+					Xvalues.addAll(newXvalues);
+					Yvalues.addAll(newYvalues);
+					System.out.println(Xvalues);
+					System.out.println(Yvalues);
+				}
+			}
+			else if(cells[x][y] != player && cells[x][y] != EMPTY_TILE) {
+				Xnew = newX(x, direction);
+				Ynew = newY(y, direction);
+				if(Xnew >= 0 && Ynew >= 0 && Xnew <= 7 && Ynew <= 7) {
+					finishable = true;
+					newXvalues.add(Xnew);
+					newYvalues.add(Ynew);
+					boardUpdate(player, direction, Xnew, Ynew);
+				}
+			}
+		}
 	}
 
-	public void flipPieces() {
-		
+	public void flipPieces(int player) {
+		for (int i = 0; i < Xvalues.size(); i++) {
+			cells[Xvalues.get(i)][Yvalues.get(i)] = player;
+		}
+		Xvalues.clear();
+		Yvalues.clear();
 	}
 	
 	@SuppressWarnings("null")
