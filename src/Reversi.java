@@ -399,7 +399,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 
 		return false;
 	}
-	Checks if a move that the user wants to play is valid. 
+	// Checks if a move that the user wants to play is valid. 
 	public boolean checkMove(int player, int direction, int x, int y) {
 		int Xnew;
 		int Ynew;
