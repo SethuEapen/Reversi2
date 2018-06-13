@@ -366,7 +366,6 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				}
 			}
 		}
-		System.out.println("abcd");
 
 		return false;
 	}
@@ -381,7 +380,6 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				}
 			}
 		}		
-		System.out.println("abcd");
 
 		return false;
 	}
