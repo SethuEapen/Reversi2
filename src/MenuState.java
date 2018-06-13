@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+// Sets the main menu image and gets and sets different heights and withs for cetrain buttons on the main value. 
 public class MenuState extends JPanel{
 	
 	Image myImage;
@@ -21,7 +22,6 @@ public class MenuState extends JPanel{
 		}
 		width = myImage.getWidth(null);
 		height = myImage.getHeight(null);
-		//System.out.println(width + ", " + height);
 	}
 	
 	

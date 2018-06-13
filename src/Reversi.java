@@ -1,3 +1,10 @@
+/* This code allows the user to Play Reversi against either an AI or against another person. 
+It only lets you play valid moves, and will keep track of the score and reset the board if a player has won 
+Sethu Eapen, Ethan Wang
+6/12/18 
+Period 1
+*/
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -20,7 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class Reversi implements ActionListener, MouseListener, Runnable {
-	//Integers
+	//Sets Basic Variables
 	int clickWidth;
 	int clickHeight;
 	int state;
@@ -52,20 +59,19 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	boolean AIplayer;
 
 	
+	
+	
 
 
 	
-	//String
 	
-	//Boolean
-	
-	//Arrays
+	//Sets Parts of JFrame and Arrays Needed
 	int[][] cells = new int[x][y];
 	ArrayList<Integer> Xvalues = new ArrayList<Integer>();
 	ArrayList<Integer> Yvalues = new ArrayList<Integer>();
 	ArrayList<Integer> newXvalues = new ArrayList<Integer>();
 	ArrayList<Integer> newYvalues = new ArrayList<Integer>();
-	//J elements
+	////Adds Values into JFrame
 	JFrame frame = new JFrame("REVERSI!");
 	ReversiPanel panel = new ReversiPanel(cells);
 	MenuState Menu = new MenuState();
@@ -131,6 +137,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	}
 
 	public void mouseReleased(MouseEvent e) {
+		// Home Menu, allows user to choose whether they want to play against AI or 2 person, lets them go to rules or credits. 
 		clickWidth = e.getX();
 		clickHeight = e.getY();
 		if(state == MENU_STATE) {
@@ -170,6 +177,8 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				}
 			}
 		}
+		// Sets gameboard squares and allows black to make a move. Flips neccesary pieces and repaints the board. Checks to see if 
+		// Game has ended, if it has, clears board. If there are no valid black moves, white goes again. 
 		else if(state == GAME_STATE) {
 			int x = clickWidth / (panel.getWidth() / cells[0].length);
 			int y = clickHeight / (panel.getHeight() / cells.length);
@@ -214,7 +223,9 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 					finishable = false;
 					finished = false;
 				}
-				else if(turn == WHITE_TURN) {
+				// Allows white to make a move. Flips neccesary pieces and repaints the board. Checks to see if 
+				// Game has ended, if it has, clears board. If there are no valid white moves, black goes again. 
+					else if(turn == WHITE_TURN) {
 					if(checkMove(WHITE_TURN, NULL_DIRECTION, x, y)) {
 						if(clickHeight > back.getHeight()) {
 							cells[x][y] = WHITE_PIECE;
@@ -266,6 +277,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	}
 	
 	@Override
+	// Updates run time
 	public void run() {
 		startTime = System.currentTimeMillis();
 		while(true) {
@@ -279,6 +291,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			frame.repaint();
 		}
 	}
+	// Checks to see who has won, pops up a pane saying who has won. 
 	public void checkWin() {
 		if (bscore > wscore) {
 			JOptionPane.showMessageDialog(frame, "Black Wins!");

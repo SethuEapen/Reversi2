@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
-
+// Draws the boards and pieces.
 @SuppressWarnings("serial")
 public class ReversiPanel extends JPanel {
 	int[][] cells;
@@ -11,12 +11,12 @@ public class ReversiPanel extends JPanel {
 	final int EMPTY_TILE = 2;
 	final int BLACK_PEICE = 0;
 	final int WHITE_PEICE = 1;	
-	Color boardGreen = new Color(0, 153, 0);
+	Color boardGreen = new Color(0, 50, 0);
 	
 	public ReversiPanel(int[][] cells) {
 		this.cells = cells;	
 	}
-	
+	// Draws board and white & black pieces. 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		width = this.getWidth() / cells[0].length;
@@ -50,7 +50,6 @@ public class ReversiPanel extends JPanel {
 
 	
 	
-	//GETTERS AND SETTERS
 	
 
 }
