@@ -11,7 +11,7 @@ public class ReversiPanel extends JPanel {
 	final int EMPTY_TILE = 2;
 	final int BLACK_PEICE = 0;
 	final int WHITE_PEICE = 1;	
-	Color boardGreen = new Color(0, 50, 0);
+	Color boardGreen = new Color(0, 75, 0);
 	
 	public ReversiPanel(int[][] cells) {
 		this.cells = cells;	

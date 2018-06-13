@@ -198,12 +198,14 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 								clearBoard();
 							}
 							else {
+								finishable = false;
+								finished = false;
 								if(AIplayer == false) {
-									if(checkWhiteMoves()) {
+									if(checkWorkingMoves(WHITE_TURN)) {
 										turn = WHITE_TURN;
 									}
 									else {
-										JOptionPane.showMessageDialog(frame, "NO VALID BLACK MOVES. WHITE GOES AGAIN!");
+										JOptionPane.showMessageDialog(frame, "NO VALID WHITE MOVES. BLACK GOES AGAIN!");
 									}								}
 								else {
 									finishable = false;
@@ -238,7 +240,9 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 								clearBoard();
 							}
 							else {
-								if(checkBlackMoves()) {
+								finishable = false;
+								finished = false;
+								if(checkWorkingMoves(BLACK_TURN)) {
 									turn = BLACK_TURN;
 								}
 								else {
@@ -362,40 +366,61 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				}
 			}
 		}
-		turn = BLACK_TURN;
+	
+		if(checkWorkingMoves(BLACK_TURN)) {
+			turn = BLACK_TURN;
+		}
+		else {
+			JOptionPane.showMessageDialog(frame, "NO VALID BLACK MOVES. WHITE GOES AGAIN!");
+			checkScore();
+			if (checkGameEnd() == true) {
+			    checkWin();
+				clearBoard();
+			}
+			finishable = false;
+			finished = false;
+			AiMove();
+			checkScore();
+			if (checkGameEnd() == true) {
+			    checkWin();
+				clearBoard();
+			}
+		}
 	}
 	// Checks if the Game has ended. 	
 	public boolean checkGameEnd() {
-		if(checkBlackMoves() && checkWhiteMoves()) {
+		if(checkWorkingMoves(BLACK_TURN) && checkWorkingMoves(WHITE_TURN)) {
+			finishable = false;
+			finished = false;
 			return false;
 		}
+		finishable = false;
+		finished = false;
 		return true;
 	}
+	
+	public void printBoard() {
+		String oneLine = null;
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				oneLine = oneLine + cells[i][j];
+			}
+			System.out.println(oneLine);
+			oneLine = null;
+		}
+	}
+	
 	// Checks if Black has any valid moves to play. 
-	public boolean checkBlackMoves() {
+	public boolean checkWorkingMoves(int player) {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
 				if (cells[i][j] == EMPTY_TILE) {	
-					if(checkMove(BLACK_TURN, NULL_DIRECTION, i, j)) {			
+					if(checkMove(player, NULL_DIRECTION, i, j)) {			
 						return true;
 					}
 				}
 			}
 		}
-
-		return false;
-	}
-	// Checks if White has any valid moves to play. 
-	public boolean checkWhiteMoves() {
-		for (int i = 0; i < cells.length; i++) {
-			for (int j = 0; j < cells[0].length; j++) {
-				if (cells[i][j] == EMPTY_TILE) {	
-					if(checkMove(WHITE_TURN, NULL_DIRECTION, i, j)) {			
-						return true;
-					}
-				}
-			}
-		}		
 
 		return false;
 	}
