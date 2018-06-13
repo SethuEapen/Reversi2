@@ -306,6 +306,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			startTime = System.currentTimeMillis();
 		}
 	}
+	// Updates the score everytime somebody makes a move. 
 	public void checkScore() {
 		bscore = 0;
 		wscore = 0;
@@ -323,6 +324,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 			}
 		}
 	}
+	// Resets Board to Original state. 
 	public void clearBoard() {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
@@ -343,6 +345,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 
 	}
 	
+	// Playing against AI, this determines where AI will move. 
 	public void AiMove() {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
@@ -361,14 +364,14 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		}
 		turn = BLACK_TURN;
 	}
-		
+	// Checks if the Game has ended. 	
 	public boolean checkGameEnd() {
 		if(checkBlackMoves() && checkWhiteMoves()) {
 			return false;
 		}
 		return true;
 	}
-	
+	// Checks if Black has any valid moves to play. 
 	public boolean checkBlackMoves() {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
@@ -382,7 +385,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 
 		return false;
 	}
-	
+	// Checks if White has any valid moves to play. 
 	public boolean checkWhiteMoves() {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
@@ -396,7 +399,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 
 		return false;
 	}
-	
+	Checks if a move that the user wants to play is valid. 
 	public boolean checkMove(int player, int direction, int x, int y) {
 		int Xnew;
 		int Ynew;
@@ -428,7 +431,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		
 		return finished;
 	}
-	
+	// Stores an array of all X, Y values that need to be flipped. 
 	public void boardUpdate(int player, int direction, int x, int y) {
 		int Xnew;
 		int Ynew;
@@ -476,6 +479,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	}
 	
 	@SuppressWarnings("null")
+	// Stores values of X and Directions
 	public int newX(int x, int direction) {
 		if(direction == NORTH) {
 			return x;
@@ -503,6 +507,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 		}
 		return (Integer) null;
 	}
+	// Getters and Setters, Storing Data of Y values and directions. 
 	@SuppressWarnings("null")
 	public int newY(int y, int direction) {
 		if(direction == NORTH) {
