@@ -179,19 +179,23 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 						if(clickHeight > back.getHeight()) {
 							cells[x][y] = BLACK_PIECE;
 							boardUpdate(BLACK_TURN, NULL_DIRECTION, x, y);
-							System.out.println(Xvalues);
-							System.out.println(Yvalues);
 							flipPieces(BLACK_TURN);
 							frame.repaint();
 							checkScore();
+							blackScore.setBackground(Color.WHITE);
+							whiteScore.setBackground(Color.GREEN);
 							if (checkGameEnd() == true) {
 							    checkWin();
 								clearBoard();
 							}
 							else {
 								if(AIplayer == false) {
-									turn = WHITE_TURN;
-								}
+									if(checkWhiteMoves()) {
+										turn = WHITE_TURN;
+									}
+									else {
+										JOptionPane.showMessageDialog(frame, "NO VALID BLACK MOVES. WHITE GOES AGAIN!");
+									}								}
 								else {
 									finishable = false;
 									finished = false;
@@ -202,8 +206,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 										clearBoard();
 									}
 								}
-								blackScore.setBackground(Color.WHITE);
-								whiteScore.setBackground(Color.GREEN);
+						
 							}
 						
 						}
@@ -224,7 +227,12 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 								clearBoard();
 							}
 							else {
-								turn = BLACK_TURN;
+								if(checkBlackMoves()) {
+									turn = BLACK_TURN;
+								}
+								else {
+									JOptionPane.showMessageDialog(frame, "NO VALID BLACK MOVES. WHITE GOES AGAIN!");
+								}
 								blackScore.setBackground(Color.GREEN);
 								whiteScore.setBackground(Color.WHITE);
 							}
@@ -323,11 +331,10 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 	}
 	
 	public void AiMove() {
-		
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
 				if (cells[i][j] == EMPTY_TILE) {	
-					if(checkMove(WHITE_TURN, NULL_DIRECTION, i, j) == true) {			
+					if(checkMove(WHITE_TURN, NULL_DIRECTION, i, j)) {			
 						cells[i][j] = WHITE_PIECE;
 						boardUpdate(WHITE_TURN, NULL_DIRECTION, i, j);
 						flipPieces(WHITE_TURN);
@@ -339,38 +346,45 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				}
 			}
 		}
+		turn = BLACK_TURN;
 	}
 		
 	public boolean checkGameEnd() {
+		if(checkBlackMoves() && checkWhiteMoves()) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean checkBlackMoves() {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
 				if (cells[i][j] == EMPTY_TILE) {	
 					if(checkMove(BLACK_TURN, NULL_DIRECTION, i, j)) {			
-						return false;
-					}
-					else if(checkMove(WHITE_TURN, NULL_DIRECTION, i, j)) {			
-						return false;
+						return true;
 					}
 				}
 			}
 		}
-		
-		for (int i = 0; i < cells.length; i++) {
-			for (int j = 0; j < cells[0].length; j++) {
-				if (cells[i][j] == EMPTY_TILE) {
-					return false;
-				}
-			}
-		}
-		
-		return true;
-			
+		System.out.println("abcd");
+
+		return false;
 	}
 	
-	
-		
-	
-	
+	public boolean checkWhiteMoves() {
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				if (cells[i][j] == EMPTY_TILE) {	
+					if(checkMove(WHITE_TURN, NULL_DIRECTION, i, j)) {			
+						return true;
+					}
+				}
+			}
+		}		
+		System.out.println("abcd");
+
+		return false;
+	}
 	
 	public boolean checkMove(int player, int direction, int x, int y) {
 		int Xnew;
@@ -426,8 +440,7 @@ public class Reversi implements ActionListener, MouseListener, Runnable {
 				if(finishable) {
 					Xvalues.addAll(newXvalues);
 					Yvalues.addAll(newYvalues);
-					System.out.println(Xvalues);
-					System.out.println(Yvalues);
+		
 				}
 			}
 			else if(cells[x][y] != player && cells[x][y] != EMPTY_TILE) {
